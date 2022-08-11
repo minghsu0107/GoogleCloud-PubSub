@@ -1,0 +1,20 @@
+version: '3'
+services:
+  server:
+    image: golang:1.18
+    restart: unless-stopped
+    depends_on:
+    - kafka
+    volumes:
+    - .:/app
+    working_dir: /app
+    environment:
+      # GOOGLE_CREDENTIALS: /my/path/to/creds
+      PUBSUB_EMULATOR_HOST: googlecloud:8085
+    command: go run main.go
+  googlecloud:
+    image: google/cloud-sdk:360.0.0
+    entrypoint: gcloud --quiet beta emulators pubsub start --host-port=0.0.0.0:8085 --verbosity=debug --log-http
+    ports:
+      - 8085:8085
+    restart: unless-stopped
