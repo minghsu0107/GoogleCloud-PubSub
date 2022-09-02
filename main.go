@@ -134,7 +134,7 @@ func createSubscriber(projectID, subscription string) message.Subscriber {
 			ReceiveSettings: pubsub.ReceiveSettings{
 				// maximum number of unprocessed message (unacked but not yet expired)
 				MaxOutstandingMessages: 10,
-				// in the background, the client will automatically call modifyAckDeadline until MaxExtension has passed
+				// in the background, the client will automatically call modifyAckDeadline every AckDeadline seconds until MaxExtension has passed
 				// after the time passes, the client assumes that you "lost" the message and stops extending
 				MaxExtension:           ackDeadline,
 				NumGoroutines:          16,
