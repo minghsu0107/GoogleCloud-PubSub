@@ -125,6 +125,8 @@ func createSubscriber(projectID, subscription string) message.Subscriber {
 				EnableMessageOrdering: false,
 				AckDeadline:           ackDeadline,
 				RetentionDuration:     24 * time.Hour,
+				// expiration policy specifies the conditions for a subscription's expiration
+				// use time.Duration(0) to indicate that the subscription should never expire
 				ExpirationPolicy:      time.Duration(0),
 				RetryPolicy: &pubsub.RetryPolicy{
 					MinimumBackoff: 10 * time.Second,
