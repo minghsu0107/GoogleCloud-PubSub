@@ -168,6 +168,7 @@ func createSubscriber(projectID, subscription string) message.Subscriber {
 				// must set ReceiveSettings.Synchronous to false to enable concurrency pulling of messages. Otherwise, NumGoroutines will be set to 1
 				Synchronous:            false,
 				// the number of goroutines spawned for pulling messages
+				// in thise case, we have 16 goroutines for handling I/O work
 				NumGoroutines:          16,
 			},
 			Unmarshaler: marshaler,
