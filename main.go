@@ -139,7 +139,7 @@ func createSubscriber(projectID, subscription string) message.Subscriber {
 				// in the background, the client will automatically call modifyAckDeadline every AckDeadline seconds until MaxExtension has passed
 				// after the time passes, the client assumes that you "lost" the message and stops extending
 				MaxExtension:           ackDeadline,
-				NumGoroutines:          16,
+				NumGoroutines:          1,
 			},
 			Unmarshaler: marshaler,
 		},
