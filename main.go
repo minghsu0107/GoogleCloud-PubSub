@@ -88,6 +88,24 @@ func main() {
 	}
 }
 
+/*
+var DefaultPublishSettings = PublishSettings{
+	DelayThreshold: 10 * time.Millisecond,
+	CountThreshold: 100,
+	ByteThreshold:  1e6,
+	Timeout:        60 * time.Second,
+
+	BufferedByteLimit: 10 * MaxPublishRequestBytes,
+	FlowControlSettings: FlowControlSettings{
+		MaxOutstandingMessages: 1000,
+		MaxOutstandingBytes:    -1,
+		LimitExceededBehavior:  FlowControlIgnore,
+	},
+
+	EnableCompression:         false,
+	CompressionBytesThreshold: 240,
+}
+*/
 func createPublisher(projectID string) message.Publisher {
 	publisher, err := googlecloud.NewPublisher(
 		googlecloud.PublisherConfig{
@@ -96,8 +114,8 @@ func createPublisher(projectID string) message.Publisher {
 			EnableMessageOrdering:     false,
 			ConnectTimeout:            10 * time.Second,
 			PublishTimeout:            5 * time.Second,
-			// enable batching (which will increase latency)
-			// PublishSettings:        &pubsub.DefaultPublishSettings,
+			// Messages are batched and sent according to the topic's PublishSettings. Publish never blocks.
+			PublishSettings:        &pubsub.DefaultPublishSettings,
 			Marshaler: marshaler,
 		},
 		logger,
