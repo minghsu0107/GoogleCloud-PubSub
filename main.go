@@ -133,18 +133,18 @@ func createSubscriber(projectID, subscription string) message.Subscriber {
 					MaximumBackoff: 600 * time.Second,
 				},
 			},
-			// 16 goroutines handling I/O work, and 10 concurrent message handlers
+			// 16 goroutines handling I/O work, and up to 10 concurrent message handlers
 			ReceiveSettings: pubsub.ReceiveSettings{
-				// maximum number of unprocessed message (unacked but not yet expired)
+				// maximum number of unprocessed messages (unacked but not yet expired)
+				// the server stops sending more messages when there are MaxOutstandingMessages unprocessed messages currently sent to the streaming pull client
 				// it limits the number of concurrent handlers of messages
 				// in this case, up to 10 unacked messages can be handled concurrently
-				// note, even in synchronous mode, messages pulled in a batch can still be handled concurrently
 				MaxOutstandingMessages: 10,
 				// in the background, the client will automatically call modifyAckDeadline every AckDeadline seconds until MaxExtension has passed
 				// after the time passes, the client assumes that you "lost" the message and stops extending
 				MaxExtension:           ackDeadline,
-				// must set ReceiveSettings.Synchronous to false to enable
-				// concurrency pulling of messages. Otherwise, NumGoroutines will be set to 1
+				// when Synchronous is false, the more performant StreamingPull is used instead of Pull (unary grpc call)
+				// must set ReceiveSettings.Synchronous to false to enable concurrency pulling of messages. Otherwise, NumGoroutines will be set to 1
 				Synchronous:            false,
 				// the number of goroutines spawned for pulling messages
 				NumGoroutines:          16,
