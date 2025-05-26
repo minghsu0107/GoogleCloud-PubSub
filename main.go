@@ -90,6 +90,10 @@ func main() {
 
 /*
 // definition of pubsub.DefaultPublishSettings
+// Messages are batched and sent according to the topic's PublishSettings. Publish never blocks.
+// if your publisher needs async batching, use the native Topic.Publish() instead of Watermill's publisher
+// because Watermill's publisher is always synchronous and sends only one message at a time
+
 var DefaultPublishSettings = PublishSettings{
 	DelayThreshold: 10 * time.Millisecond,
 	CountThreshold: 100,
@@ -115,7 +119,6 @@ func createPublisher(projectID string) message.Publisher {
 			EnableMessageOrdering:     false,
 			ConnectTimeout:            10 * time.Second,
 			PublishTimeout:            5 * time.Second,
-			// Messages are batched and sent according to the topic's PublishSettings. Publish never blocks.
 			PublishSettings:        &pubsub.DefaultPublishSettings,
 			Marshaler: marshaler,
 		},
