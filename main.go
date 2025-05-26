@@ -89,6 +89,7 @@ func main() {
 }
 
 /*
+// definition of pubsub.DefaultPublishSettings
 var DefaultPublishSettings = PublishSettings{
 	DelayThreshold: 10 * time.Millisecond,
 	CountThreshold: 100,
