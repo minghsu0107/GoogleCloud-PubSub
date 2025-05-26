@@ -133,7 +133,7 @@ func createSubscriber(projectID, subscription string) message.Subscriber {
 					MaximumBackoff: 600 * time.Second,
 				},
 			},
-			// 16 goroutines handling I/O work, and 10 concurrent handlers
+			// 16 goroutines handling I/O work, and 10 concurrent message handlers
 			ReceiveSettings: pubsub.ReceiveSettings{
 				// maximum number of unprocessed message (unacked but not yet expired)
 				// it limits the number of concurrent handlers of messages
